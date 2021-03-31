@@ -37,7 +37,7 @@ public class ProMapperTest {
 				log.info(board);
 			});
 		}
-		@Test
+		//@Test
 		public void testUpdate() {
 			ProVO vo=new ProVO();
 			vo.setPno(30);
@@ -46,6 +46,11 @@ public class ProMapperTest {
 			vo.setPdimg("resources/img/product/redwood/detail.jpg");
 			vo.setPrice(45000);
 			mapper.update(vo);
+		}
+		@Test
+		public void getOne() {
+			ProVO vo=mapper.read(30);
+			log.info(vo);
 		}
 		
 }

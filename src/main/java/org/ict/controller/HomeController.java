@@ -42,11 +42,16 @@ public class HomeController {
 		
 	}
 	@GetMapping("/detail")
-	public void ajaxTest2() {
-		
+	public void ajaxTest2(Model model, int pno) {
+		model.addAttribute("pno", pno);
 	}
 	@GetMapping("/list")
 	public void ajaxTest3() {
 		
 	}
+	@GetMapping("/update")
+	public void ajaxTest4(Model model, int pno) {
+		model.addAttribute("pno", pno);
+	}
+	
 }

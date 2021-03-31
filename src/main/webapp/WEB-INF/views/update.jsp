@@ -85,7 +85,7 @@
                 <div class="row text-right">
                     <div class="col-md-4 offset-md-4">
                         <!-- <button class="btn btn-success" type="submit"><h4 id="h4Btn">등록하기</h4></button> -->
-                        <button type="button" class="btn btn-success" id="productAddbtn"><h4>수정하기</h4></button>
+                        <button type="button" class="btn btn-success" id="updateBtn"><h4>수정하기</h4></button>
                     </div>
                 </div>
                 
@@ -97,39 +97,62 @@
     
     
     <script type="text/javascript">
+ 	$(document).ready(function(){
+    	
+    	var pno=${pno};
+    	
+    	function getOne(){
+    		$.getJSON("/addproduct/one/" +pno, function(da){
+    			
+    			 $('#pimg').attr('value',da.pimg);
+    			 $('#pdimg').attr('value',da.pdimg);
+    			 $('#pname').attr('value',da.pname);
+    			 $('#price').attr('value',da.price);
+    			
+    			
+    		})
+    	}
+    	getOne();
+    
+    	$("#updateBtn").on("click" , function(){
+    		
+    		var pimg=$("#pimg").val();
+    		var pdimg=$("#pdimg").val();
+    		var pname=$("#pname").val();
+    		var price=$("#price").val();
+    		$.ajax({
+    			type:'patch',
+    			url: '/addproduct/' +pno,
+    			header : {
+    				"Content-Type" : "application/json",
+    				"X-HTTP-Method-Override" : "PATCH"
+    			},
+    			contentType:"application/json",
+    			data: JSON.stringify({
+    				pname: pname,
+    		    	price: price,
+    		    	pimg: pimg,
+    		    	pdimg: pdimg	
+    			}),
+    			dataType : 'text',
+    			success: function(result){
+					console.log("result: " +result);
+					if(result=='SUCCESS'){
+						alert("수정 되었습니다.");
+						
+					}
+				}
+    			
+    		});
+    		
+    	
+    	
+    	});
+    	   	
+    });
     
     
-    $("#productAddbtn").on("click", function() {
-		var pname = $("#pname").val();
-		var price = $("#price").val();
-		var pcnt= $("#pcnt").val();
-		var pimg = $("resources/img/product/atthebeach/"+"#pimg").val();
-		var pdimg = $("#pdimg").val();
-		
-		$.ajax({
-			type : 'post',
-			url : '/addproduct',
-			headers : {
-				"Content-Type" : "application/json",
-				"X-HTTP-Method-Override" : "POST"
-			},
-		    dataType : 'text',
-		    data : JSON.stringify({
-		    	pname: pname,
-		    	price: price,
-		    	pcnt: pcnt,
-		    	pimg: pimg,
-		    	pdimg: pdimg		    	
-		    }),
-		    success : function(result) {
-		    	
-		    	if(result === 'SUCCESS'){
-		    		alert("등록 되었습니다.");
-		    	}
-		    }
-		});
-	});//productAddBtn end
-
+  
     </script>
 </body>
 </html>

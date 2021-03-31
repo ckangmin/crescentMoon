@@ -97,7 +97,7 @@
 				// ul 태그 내에 li형태로 댓글정보를 넣기 위해
 				// 아래와 같이 설정합니다.
 				str += "<div class='col-md-4 text-center'>"+
-                "<a href='./detail.html'><img class='img-thumbnail' src='" +this.pimg+ "'></a><hr>"+
+                "<a href='./detail.html?pno="+this.pno+"'><img class='img-thumbnail' src='" +this.pimg+ "'></a><hr>"+
                 "<a><strong>"+this.pname+"</strong></a>"+
                 "<p>"+this.price+"</p></div>";
 			});

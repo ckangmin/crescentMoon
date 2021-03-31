@@ -8,4 +8,5 @@ public interface ProMapper {
 	public void insert(ProVO vo);
 	public List<ProVO> getList();
 	public void update(ProVO vo);
+	public ProVO read(int pno);
 }

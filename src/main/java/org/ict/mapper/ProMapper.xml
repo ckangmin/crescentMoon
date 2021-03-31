@@ -21,5 +21,8 @@
 	 pname=#{pname}, price=#{price}, pimg=#{pimg} , pdimg=#{pdimg}
 	 where pno=#{pno}
 	 </update>
- 
+ 	<select id="read" resultType="org.ict.domain.ProVO">
+ 		select *from product where pno=#{pno}
+ 	
+ 	</select>
  </mapper>

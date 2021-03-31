@@ -8,4 +8,5 @@ public interface ProService {
 	public void create(ProVO vo);
 	public List<ProVO> list();
 	public void modify(ProVO vo);
+	public ProVO get(int pno);
 }

@@ -32,4 +32,11 @@ public class ProServiceImpl implements ProService {
 		
 	}
 
+
+	@Override
+	public ProVO get(int pno) {
+		
+		return mapper.read(pno);
+	}
+
 }

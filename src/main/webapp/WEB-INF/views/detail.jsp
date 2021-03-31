@@ -17,6 +17,7 @@
     <header><!--header-->
         <div class="container">
             <div class="row">
+            	<input type="hidden" id="pno" vlaue="${vo.pno }">
                 <a href="resources/index.html" class="col-md-1 offset-md-5"><img src="resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
                     <a href="resources/member/login.html">로그인/회원가입</a>
@@ -57,16 +58,20 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <img src="resources/img/product/redwood/rw.jpg">
+                <img id="pimg"><!-- 제품이미지 들어가는곳 -->
             </div>
             <div class="col-md-6">
-                <h1>레드우드</h1><hr>
+               <h1><input type="text" readonly id ="pname" class="text-center" 
+               style="border:none;border-right:0px; border-top:0px; 
+               boder-left:0px; boder-bottom:0px;"></h1><hr><!--  상품이름 -->
                 <div class="row text-center my-5">
                     <div class="col-md-6 text-center">
                         <h3>판매가</h3>
                     </div>
                     <div class="col-md-6 text-center">
-                        <h3>20,000원</h3>
+                       <h3><input type="text" readonly id ="price" class="text-center"
+                       style="border:none;border-right:0px; border-top:0px; boder-left:0px;
+                        boder-bottom:0px;" ></h3><!--  상품 가격 -->
                     </div>
                 </div><!--div row end-->
 
@@ -75,7 +80,7 @@
                         <h3>배송비</h3>
                     </div>
                     <div class="col-md-6 text-center">
-                        <h3>3,000원</h3>
+                        <h3>&nbsp&nbsp&nbsp 3,000원</h3>
                     </div>
                 </div><!--div row end-->
 
@@ -110,6 +115,11 @@
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-success" data-toggle="modal" data-target="#cartUpdate"><h3 id="h3Btn">장바구니</h3></button>
+                    </div>
+                  
+                    <div class="col-md-3 offset-md-9">
+                     	<br>
+                       <a href="./update.html?pno=${pno}"><button class="btn btn-primary mr-3" type="button"><h5 id="h5Btn">수정하기</h5></button></a>
                     </div>
                 </div>
             </div>
@@ -165,7 +175,7 @@
                 <div class="tab-content">
                     <div id="detail" class="container tab-pane active"><br>
                         <img src="resources/img/product/com_top.jpg">
-                        <img src="resources/img/product/redwood/detail.jpg">
+                        <img id="pdimg"><!-- 제품 상세 이미지 들어가는곳 -->
                         <img src="resources/img/product/com_bot.jpg">
                     </div><!--div detail end-->
                     <div id="review" class="container tab-pane fade"><br>
@@ -212,6 +222,34 @@
     </div><!-- div modal fade end -->
 
     <!--bootstrap.min.js-->
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	
+    	var pno=${pno};
+    	
+    	function getOne(){
+    		$.getJSON("/addproduct/one/" +pno, function(da){
+    			
+    			 $('#pimg').attr('src',da.pimg);
+    			 $('#pdimg').attr('src',da.pdimg);
+    			 $('#pname').attr('value',da.pname);
+    			 $('#price').attr('value',da.price+"원");
+    			
+    			
+    		})
+    	}
+    	getOne();
+    	
+    	
+    	
+    	
+    	
+    });//document
+    
+    
+    
+    
+    </script>
 </body>
 </html>
