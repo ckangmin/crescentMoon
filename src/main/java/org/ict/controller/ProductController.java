@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.config.ExecutorBeanDefinitionParser;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/addproduct")
-public class CartController {
+@RequestMapping("/product")
+public class ProductController {
 	@Autowired
 	private ProService service;
 	
@@ -88,5 +89,21 @@ public class CartController {
 		}
 				return entity;			
 	}
+	@DeleteMapping(value="/{pno}",
+							produces= {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> remove(
+			@PathVariable("pno") int pno){
+		ResponseEntity<String> entity=null;
+		try {
+			service.remove(pno);
+			entity=new ResponseEntity<String>("SUCCESS", HttpStatus.OK);}
+		catch(Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<>(
+				e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+			
 	
 }

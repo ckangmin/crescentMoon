@@ -37,19 +37,19 @@ public class HomeController {
 		
 		return "home";
 	}
-	@GetMapping("/addprod")
+	@GetMapping("/product/addprod")
 	public void ajaxTest() {
 		
 	}
-	@GetMapping("/detail")
+	@GetMapping("/product/detail")
 	public void ajaxTest2(Model model, int pno) {
 		model.addAttribute("pno", pno);
 	}
-	@GetMapping("/list")
+	@GetMapping("/product/list")
 	public void ajaxTest3() {
 		
 	}
-	@GetMapping("/update")
+	@GetMapping("/product/update")
 	public void ajaxTest4(Model model, int pno) {
 		model.addAttribute("pno", pno);
 	}

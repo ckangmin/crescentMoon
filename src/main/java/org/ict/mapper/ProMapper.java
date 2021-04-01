@@ -9,4 +9,5 @@ public interface ProMapper {
 	public List<ProVO> getList();
 	public void update(ProVO vo);
 	public ProVO read(int pno);
+	public void delete(int pno);
 }

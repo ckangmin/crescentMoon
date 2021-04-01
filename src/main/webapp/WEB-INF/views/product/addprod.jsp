@@ -20,36 +20,36 @@
      <header><!--header-->
         <div class="container">
             <div class="row">
-                <a href="../resources/index.html" class="col-md-1 offset-md-5"><img src="../resources/img/cm_logo.png" id="logo"></a>
+                <a href="../resources/index" class="col-md-1 offset-md-5"><img src="../resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="../resources/member/login.html">로그인/회원가입</a>
-                    <a href="../resources/member/cart.html" class="ml-3">장바구니</a><br>
-                    <a href="../resources/index.html">로그아웃</a>
-                    <a href="../resources/member/cart.html" class="ml-3">장바구니</a>
-                    <a href="../resources/member/mypage.html" class="ml-3">마이페이지</a><br>
+                    <a href="../resources/member/login">로그인/회원가입</a>
+                    <a href="../resources/member/cart" class="ml-3">장바구니</a><br>
+                    <a href="../resources/index">로그아웃</a>
+                    <a href="../resources/member/cart" class="ml-3">장바구니</a>
+                    <a href="../resources/member/mypage" class="ml-3">마이페이지</a><br>
                 </div>
             </div><!-- div row end -->
         </div><!-- div container end -->
     </header><!-- header end -->
-    
+    av>
         <div class="container">
             <ul class="nav nav-tabs nav-justified" id="nav">
-                <li class="nav-item"><a class="nav-link" href="../resources/board/notice.html">공지사항</a></li>
-                <li class="nav-item"><a class="nav-link" href="/product/list.html">전체상품</a></li>
-                <li class="nav-item"><a class="nav-link" href="../resources/board/community.html">커뮤니티</a></li>
+                <li class="nav-item"><a class="nav-link" href="../resources/board/notice">공지사항</a></li>
+                <li class="nav-item"><a class="nav-link" href="/product/list">전체상품</a></li>
+                <li class="nav-item"><a class="nav-link" href="../resources/board/community">커뮤니티</a></li>
                 <li class="nav-item">
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="./list.html" class="input-group-text"><img src="../resources/icon/search.svg"></a>
+                            <a href="./list" class="input-group-text"><img src="../resources/icon/search.svg"></a>
                         </div>
                     </div>
                 </li>
             </ul><!-- ul nav end -->
         </div><!-- div container end -->
     </nav><!-- nav end -->
-   
-   
+
+
     <div class="container">
         <div class="jumbotron my-5">
             <form action="">
@@ -85,30 +85,31 @@
                 <div class="row text-right">
                     <div class="col-md-4 offset-md-4">
                         <!-- <button class="btn btn-success" type="submit"><h4 id="h4Btn">등록하기</h4></button> -->
-                        <button type="button" class="btn btn-success" id="productAddbtn"><h4>수정하기</h4></button>
+                       <button type="button" class="btn btn-success" id="productAddbtn"><h4>등록하기</h4></button>
                     </div>
                 </div>
-                
+
             </form>
         </div>
     </div>
-    
-    
-    
-    
+
+
+
+
     <script type="text/javascript">
+    
     
     
     $("#productAddbtn").on("click", function() {
 		var pname = $("#pname").val();
 		var price = $("#price").val();
 		var pcnt= $("#pcnt").val();
-		var pimg = $("resources/img/product/atthebeach/"+"#pimg").val();
+		var pimg = $("#pimg").val();
 		var pdimg = $("#pdimg").val();
 		
 		$.ajax({
 			type : 'post',
-			url : '/addproduct',
+			url : '/product',
 			headers : {
 				"Content-Type" : "application/json",
 				"X-HTTP-Method-Override" : "POST"
@@ -125,11 +126,11 @@
 		    	
 		    	if(result === 'SUCCESS'){
 		    		alert("등록 되었습니다.");
+		    		window.location.href = "/product/list";
 		    	}
 		    }
 		});
 	});//productAddBtn end
-
     </script>
 </body>
-</html>
+</html> 

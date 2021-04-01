@@ -9,4 +9,5 @@ public interface ProService {
 	public List<ProVO> list();
 	public void modify(ProVO vo);
 	public ProVO get(int pno);
+	public void remove(int pno);
 }

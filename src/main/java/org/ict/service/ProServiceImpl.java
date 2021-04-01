@@ -39,4 +39,11 @@ public class ProServiceImpl implements ProService {
 		return mapper.read(pno);
 	}
 
+
+	@Override
+	public void remove(int pno) {
+		mapper.delete(pno);
+		
+	}
+
 }

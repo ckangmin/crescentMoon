@@ -102,7 +102,7 @@
     	var pno=${pno};
     	
     	function getOne(){
-    		$.getJSON("/addproduct/one/" +pno, function(da){
+    		$.getJSON("/product/one/" +pno, function(da){
     			
     			 $('#pimg').attr('value',da.pimg);
     			 $('#pdimg').attr('value',da.pdimg);
@@ -122,7 +122,7 @@
     		var price=$("#price").val();
     		$.ajax({
     			type:'patch',
-    			url: '/addproduct/' +pno,
+    			url: '/product/' +pno,
     			header : {
     				"Content-Type" : "application/json",
     				"X-HTTP-Method-Override" : "PATCH"
@@ -139,7 +139,7 @@
 					console.log("result: " +result);
 					if(result=='SUCCESS'){
 						alert("수정 되었습니다.");
-						
+						window.location.href = "/product/list";
 					}
 				}
     			
