@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,22 +35,6 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home";
-	}
-	@GetMapping("/product/addprod")
-	public void ajaxTest() {
-		
-	}
-	@GetMapping("/product/detail")
-	public void ajaxTest2(Model model, int pno) {
-		model.addAttribute("pno", pno);
-	}
-	@GetMapping("/product/list")
-	public void ajaxTest3() {
-		
-	}
-	@GetMapping("/product/update")
-	public void ajaxTest4(Model model, int pno) {
-		model.addAttribute("pno", pno);
 	}
 	
 }

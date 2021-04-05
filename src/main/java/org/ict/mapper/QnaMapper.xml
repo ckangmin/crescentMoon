@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.QnaMapper">
+	
+	<insert id="insert">
+		insert into qna(qtitle, qcontent, mno)
+		values(#{qtitle}, #{qcontent}, #{mno})
+	</insert>
+	
+	<select id="selectAll" resultType="org.ict.domain.QnaVO">
+		select qno, qtitle, u.mid, qwritedate
+		from qna as q, userinfo as u
+		where q.mno = u.mno and qno > 0
+		order by qno desc
+	</select>
+	
+	<select id="select" resultType="org.ict.domain.QnaVO">
+		select qno, qtitle, qcontent, q.mno, u.mid, qwritedate, qupdatedate
+		from qna as q, userinfo as u 
+		where q.mno = u.mno and qno = #{qno}
+	</select>
+	
+	<update id="update">
+		update qna set qtitle = #{qtitle}, qcontent = #{qcontent}, qupdatedate = now()
+		where qno = #{qno}
+	</update>
+	
+	<delete id="delete">
+		delete from qna where qno = #{qno}
+	</delete>
+	
+</mapper>

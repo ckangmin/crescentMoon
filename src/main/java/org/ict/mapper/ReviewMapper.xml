@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.ReviewMapper">
+
+<sql id="imgname">
+	<if test="rimg1 != null">, rimg1</if>
+	<if test="rimg2 != null">, rimg2</if>
+	<if test="rimg3 != null">, rimg3</if>
+</sql>
+
+<sql id="imgvalue">
+	<if test="rimg1 != null">, #{rimg1}</if>
+	<if test="rimg2 != null">, #{rimg2}</if>
+	<if test="rimg3 != null">, #{rimg3}</if>
+</sql>
+
+	<insert id="insert">
+		insert into review(rtitle, rcontent, mno, pno
+		<include refid="imgname"></include>
+		) values(#{rtitle}, #{rcontent}, #{mno}, #{pno}
+		<include refid="imgvalue"></include>
+		)
+	</insert>
+	
+	<select id="selectAll" resultType="org.ict.domain.ReviewVO">
+		select pimg, pname, rno, rtitle, u.mid, rwritedate
+		from review as r, userinfo as u, product as p
+		where r.mno = u.mno and r.pno = p.pno and rno > 0
+		order by rno desc
+	</select>
+	
+	<select id="select" resultType="org.ict.domain.ReviewVO">
+		select rno, rtitle, rcontent, u.mid, rimg1, rimg2, rimg3, rwritedate, rupdatedate
+		from review as r, userinfo as u where r.mno = u.mno and rno = #{rno}
+	</select>
+	
+	<update id="update">
+		update review set rtitle = #{rtitle}, rcontent = #{rcontent}, pno = #{pno}
+		<if test="rimg1 != null">
+			, rimg1 = #{rimg1}
+		</if>
+		<if test="rimg2 != null">
+			, rimg2 = #{rimg2}
+		</if>
+		<if test="rimg3 != null">
+			, rimg3 = #{rimg3}
+		</if>
+		, rupdatedate = now()
+		where rno = #{rno}
+	</update>
+	
+	<delete id="delete">
+		delete from review where rno = #{rno}
+	</delete>
+
+</mapper>

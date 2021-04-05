@@ -4,27 +4,27 @@
 <head>
 <meta charset="UTF-8">
 <!-- bootstrap.min.css -->
-<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 <!--custom.css-->
-<link href="../resources/css/custom.css" rel="stylesheet">
+<link href="/resources/css/custom.css" rel="stylesheet">
 <!--jquery.min.js-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <title>CRESCENT MOON</title>
-<link rel="shortcut icon" type="image/x-icon" href="../resources/img/cm_icon.png">
+<link rel="shortcut icon" type="image/x-icon" href="/resources/img/cm_icon.png">
 </head>
 <body>
     <header><!--header-->
         <div class="container">
             <div class="row">
-            	<input type="hidden" id="pno" vlaue="${vo.pno }">
-                <a href="../resources/index" class="col-md-1 offset-md-5"><img src="../resources/img/cm_logo.png" id="logo"></a>
+            	<input type="hidden" id="pno" value="${pno}">
+                <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="../resources/member/login">로그인/회원가입</a>
-                    <a href="../resources/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="../resources/index">로그아웃</a>
-                    <a href="../resources/member/cart" class="ml-3">장바구니</a>
-                    <a href="../resources/member/mypage" class="ml-3">마이페이지</a><br>
+                    <a href="/member/login">로그인/회원가입</a>
+                    <a href="/member/cart" class="ml-3">장바구니</a><br>
+                    <a href="/crescent">로그아웃</a>
+                    <a href="/member/cart" class="ml-3">장바구니</a>
+                    <a href="/member/mypage" class="ml-3">마이페이지</a><br>
                 </div>
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -33,14 +33,14 @@
     <nav>
         <div class="container">
             <ul class="nav nav-tabs nav-justified" id="nav">
-                <li class="nav-item"><a class="nav-link" href="../resources/board/notice">공지사항</a></li>
-                <li class="nav-item"><a class="nav-link active" href="./list">전체상품</a></li>
-                <li class="nav-item"><a class="nav-link" href="../resources/board/community">커뮤니티</a></li>
+                <li class="nav-item"><a class="nav-link" href="/community/notice">공지사항</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/product/list">전체상품</a></li>
+                <li class="nav-item"><a class="nav-link" href="/community/">커뮤니티</a></li>
                 <li class="nav-item">
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="./list" class="input-group-text"><img src="../resources/icon/search.svg"></a>
+                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
                         </div>
                     </div>
                 </li>
@@ -51,9 +51,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-right my-3">
-                <a >홈</a>
+                <a href="/crescent">홈</a>
                 <a href="#">-</a>
-                <a href="./list">상품목록</a>
+                <a href="/product/list">상품목록</a>
             </div>
         </div>
         <div class="row">
@@ -63,11 +63,14 @@
             <div class="col-md-6">
             	<div class="row">
 	            	<div class="col-md-6">
-		               <h1 id="pname"></h1><!--  상품이름 -->
+		               <h2 id="pname"></h2><!--  상품이름 -->
 	            	</div>
 	            	<div class="col-md-6 text-right">
-	            		<a href="./update?pno=${pno}"><button class="btn btn-primary mr-3" type="button"><h5 id="h5Btn">수정하기</h5></button></a>
-	                    <button class="btn btn-danger mr-3" type="button" id="btndelete"><h5 id="h5Btn">삭제하기</h5></button>
+		            	<form action="/product/modify" method="post">
+		            		<input type="hidden" id="pno" name="pno" value="${pno}">
+		            		<button class="btn btn-primary mr-3" type="submit"><h5 id="h5Btn">수정하기</h5></button>
+	                    	<button class="btn btn-danger mr-3" type="button" id="delBtn"><h5 id="h5Btn">삭제하기</h5></button>
+		            	</form>
 	            	</div>
             	</div>
             	<div class="row">
@@ -120,13 +123,11 @@
                 <div class="row text-right mt-3">
                     <div class="col-md-4 offset-md-4">
                         <!-- <button class="btn btn-warning"><h3 id="h3Btn">바로구매</h3></button> -->
-                        <a href="../resources/member/cart" class="btn btn-warning"><h3 id="h3Btn">바로구매</h3></a>
+                        <a href="/member/cart" class="btn btn-warning"><h3 id="h3Btn">바로구매</h3></a>
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-success" data-toggle="modal" data-target="#cartUpdate"><h3 id="h3Btn">장바구니</h3></button>
                     </div>
-                  
-                  
                 </div>
             </div>
         </div><!--div row end-->
@@ -139,23 +140,23 @@
         </div>
         <div class="row">
             <div class="col-md-3 text-center">
-                <a href="../resources/product/detail"><img class="img-thumbnail" src="../resources/img/product/redwood/rw.jpg"></a><hr>
-                <a href="../resources/product/detail">레드우드</a>
+                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/redwood/rw.jpg"></a><hr>
+                <a href="/product/detail">레드우드</a>
                 <p>20,000원</p><hr>
             </div>
             <div class="col-md-3 text-center">
-                <a href="../resources/product/detail"><img class="img-thumbnail" src="../resources/img/product/blackcherry/bc.jpg"></a><hr>
-                <a href="../resources/product/detail">블랙베리</a>
+                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/blackcherry/bc.jpg"></a><hr>
+                <a href="/product/detail">블랙베리</a>
                 <p>20,000원</p><hr>
             </div>
             <div class="col-md-3 text-center">
-                <a href="../resources/product/detail"><img class="img-thumbnail" src="../resources/img/product/lavenderspa/ls.jpg"></a><hr>
-                <a href="../resources/product/detail">라벤더 스파</a>
+                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/lavenderspa/ls.jpg"></a><hr>
+                <a href="/product/detail">라벤더 스파</a>
                 <p>20,000원</p><hr>
             </div>
             <div class="col-md-3 text-center">
-                <a href="../resources/product/detail"><img class="img-thumbnail" src="../resources/img/product/tranquilitea/tq.jpg"></a><hr>
-                <a href="../resources/product/detail">트랜퀄리티</a>
+                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/tranquilitea/tq.jpg"></a><hr>
+                <a href="/product/detail">트랜퀄리티</a>
                 <p>20,000원</p><hr>
             </div>
         </div><hr><!--div row end-->
@@ -180,9 +181,9 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div id="detail" class="container tab-pane active"><br>
-                        <img src="../resources/img/product/com_top.jpg">
+                        <img src="/resources/img/product/com_top.jpg">
                         <img id="pdimg"><!-- 제품 상세 이미지 들어가는곳 -->
-                        <img src="../resources/img/product/com_bot.jpg">
+                        <img src="/resources/img/product/com_bot.jpg">
                     </div><!--div detail end-->
                     <div id="review" class="container tab-pane fade"><br>
                         <h3>리뷰</h3>
@@ -228,55 +229,41 @@
     </div><!-- div modal fade end -->
 
     <!--bootstrap.min.js-->
-    <script src="../resources/js/bootstrap.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-    $(document).ready(function(){
-    	
-    	var pno=${pno};
-    	
-    	function getOne(){
-    		$.getJSON("/product/one/" +pno, function(da){
-    			
-    			 $('#pimg').attr('src',da.pimg);
-    			 $('#pdimg').attr('src',da.pdimg);
-    			 $('#pname').text(da.pname);
-    			 $('#price').text(da.price);
-    			
-    			
-    		})
-    	}
-    	getOne();
-    	
-    	$("#btndelete").on("click" ,function(){
-    		$.ajax({
-    			type:'delete',
-    			url:'/product/' +pno,
-    			header : {
-					"Content-Type" : "application/json",
-					"X-HTTP-Method-Override" : "DELETE"
-				},
-				dataType : 'text',
-				success: function(result){
-					console.log("result: "+result);
-					if(result =='SUCCESS'){
-						alert("삭제 되었습니다.");
-						window.location.href = "/product/list";
-
-						
+	    $(document).ready(function(){
+	    	
+	    	var pno = ${pno};
+	    	
+	    	function getOne() {
+	    		$.getJSON("/product/one/" + pno, function(data){
+	    			 $('#pimg').attr('src', data.pimg);
+	    			 $('#pdimg').attr('src', data.pdimg);
+	    			 $('#pname').text(data.pname);
+	    			 $('#price').text(data.price);
+	    		});//getJSON
+	    	}//getOne
+	    	getOne();
+	    	
+	    	$("#delBtn").on("click" , function() {
+	    		$.ajax({
+	    			type:'delete',
+	    			url:'/product/' + pno,
+	    			header : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "DELETE"
+					},
+					dataType : 'text',
+					success: function(result) {
+						if(result === 'SUCCESS') {
+							alert("삭제 되었습니다.");
+							window.location.href = "/product/list";
+						}
 					}
-				}
-    		});
-    		
-    	});
-    	
-    	
-    	
-    	
-    });//document
-    
-    
-    
-    
+	    		});//ajax
+	    	});//delBtn
+	    	
+	    });//ready
     </script>
 </body>
 </html>
