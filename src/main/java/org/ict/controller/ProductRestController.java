@@ -1,5 +1,10 @@
 package org.ict.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.ict.domain.ProductVO;
@@ -20,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import jdk.internal.org.jline.utils.Log;
+import lombok.extern.log4j.Log4j;
 
 @RestController
 @RequestMapping("/product/*")
@@ -128,5 +137,37 @@ public class ProductRestController {
 		
 		return entity;
 	}//recommend
+	@PostMapping("/uploadAjaxAction")
+	@ResponseBody
+	public ResponseEntity<String> uploadAjaxPost(MultipartFile uploadFile){
+		ResponseEntity<String> entity=null;
+		Log.info("product image upload!!");
+		String path=null;
+		String uploadFolder= "C:\\crescent\\img";
+		
+		String uploadFolderPath="product";
+		
+		File uploadPath= new File(uploadFolder, uploadFolderPath);
+		Log.info("upload path: "+uploadPath);
+		if(uploadPath.exists()== false) {
+			uploadPath.mkdirs();
+		}
+	
+		MultipartFile multipartFile = uploadFile;
+		String uploadFileName=multipartFile.getOriginalFilename();
+		uploadFileName =uploadFileName.substring(uploadFileName.lastIndexOf("\\") +1);
+		Log.info("only file name : " +uploadFileName);
+		String imgpath=uploadFileName;
+		try {
+			File saveFile= new File (uploadPath, uploadFileName);
+			multipartFile.transferTo(saveFile);
+			entity=new ResponseEntity<>(saveFile,HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return entity;
+	
+	}
+		
 	
 }//class

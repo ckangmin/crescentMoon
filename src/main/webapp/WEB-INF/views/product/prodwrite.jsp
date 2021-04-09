@@ -76,14 +76,20 @@
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <h3 class="text-left">상품이미지</h3>
-                        <input class="form-control-file" name="pimg" id="pimg" type="file">
+                        <div class="uploadDiv">
+							상품 이미지:<input type="file" name="pimg" id="pimg" class="uploadInput">
+						</div>
+                        <!--<input class="form-control-file" name="pimg" id="pimg" type="file">  -->
                         <hr>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <h3 class="text-left">상품상세이미지</h3>
-                        <input class="form-control-file" name="pdimg" id="pdimg" type="file">
+                        <!--<input class="form-control-file" name="pdimg" id="pdimg" type="file">  -->
+                        <div class="uploadDiv2">
+							상품 상세이미지:<input type="file" name="pdimg" id="pdimg" class="uploadInput">
+						</div>
                         <hr>
                     </div>
                 </div>
@@ -146,6 +152,21 @@
 				    }
 				});//ajax
 			});//productAddBtn end
+		    var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+			var maxSize = 5242880; // 5MB
+			
+			function checkExtension(fileName, fileSize){
+				if(fileSize >= maxSize){
+					alert("파일사이즈 초과");
+					return false;
+				}
+				
+				if(regex.test(fileName)){
+					alert("해당 종류의 파일은 업로드할 수 없습니다.");
+					return false;
+				}
+				return true;
+			}//checkExtension
 			
 		});//ready
     </script>
