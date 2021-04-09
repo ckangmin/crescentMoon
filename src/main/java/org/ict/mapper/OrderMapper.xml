@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="org.ict.mapper.OrderMapper">
+ 
+	<resultMap type="org.ict.domain.CartVO" id="cartSelectRN">
+ 		<result property="result" column="(p.price * cnt)" />
+ 	</resultMap>
+ 	<resultMap type="org.ict.domain.CartVO" id="cartTotalRN">
+ 		<result property="total" column="(p.price * cnt)" />
+ 	</resultMap>
+ 	
+ 	<select id="selectPayment" resultType="org.ict.domain.CartVO" resultMap="cartSelectRN">
+ 		select distinct cno, p.pimg, p.pname, cnt, (p.price * cnt), c.mno, p.pno
+		from cart as c, product as p, userinfo as u
+		where c.mno = u.mno and c.pno = p.pno
+		and cno in
+		<foreach collection="arr" item="cno" open="(" close=")" separator=",">
+ 			#{cno}
+ 		</foreach>
+ 	</select>
+ 	
+	<select id="total" resultType="org.ict.domain.CartVO" resultMap="cartTotalRN">
+		select distinct cno, (p.price * cnt)
+		from cart as c, product as p, userinfo as u
+		where c.mno = u.mno and c.pno = p.pno
+		and cno in
+		<foreach collection="arr" item="cno" open="(" close=")" separator=",">
+ 			#{cno}
+ 		</foreach>
+	</select>
+ 	
+ </mapper>

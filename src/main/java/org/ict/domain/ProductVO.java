@@ -11,5 +11,4 @@ public class ProductVO {
 	private int salescnt;
 	private String pimg;
 	private String pdimg;
-
 }

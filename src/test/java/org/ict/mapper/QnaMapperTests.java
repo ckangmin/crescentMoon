@@ -2,6 +2,7 @@ package org.ict.mapper;
 
 import java.util.List;
 
+import org.ict.domain.Criteria;
 import org.ict.domain.QnaVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,8 @@ public class QnaMapperTests {
 	
 	@Test
 	public void testSeletAll() {
-		List<QnaVO> lists = mapper.selectAll();
+		Criteria cri = new Criteria();
+		List<QnaVO> lists = mapper.selectList(cri);
 		
 		lists.forEach(list -> {
 			log.info(list);

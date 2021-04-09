@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -17,14 +19,19 @@
     <header><!--header-->
         <div class="container">
             <div class="row">
-            	<input type="hidden" id="pno" value="${pno}">
                 <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="/member/login">로그인/회원가입</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="/crescent">로그아웃</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a>
-                    <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
+                        <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div>
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -40,7 +47,7 @@
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -68,8 +75,10 @@
 	            	<div class="col-md-6 text-right">
 		            	<form action="/product/modify" method="post">
 		            		<input type="hidden" id="pno" name="pno" value="${pno}">
-		            		<button class="btn btn-primary mr-3" type="submit"><h5 id="h5Btn">수정하기</h5></button>
-	                    	<button class="btn btn-danger mr-3" type="button" id="delBtn"><h5 id="h5Btn">삭제하기</h5></button>
+		            		<c:if test="${login.mid == 'admin'}">
+			            		<button class="btn btn-primary mr-3" type="submit"><h5 id="h5Btn">수정하기</h5></button>
+		                    	<button class="btn btn-danger mr-3" type="button" id="delBtn"><h5 id="h5Btn">삭제하기</h5></button>
+		            		</c:if>
 		            	</form>
 	            	</div>
             	</div>
@@ -84,15 +93,6 @@
                     </div>
                     <div class="col-md-6 text-center">
                        <h3 id="price"></h3><!--  상품 가격 -->
-                    </div>
-                </div><!--div row end-->
-
-                <div class="row text-center my-5">
-                    <div class="col-md-6 text-center">
-                        <h3>배송비</h3>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <h3>3,000원</h3>
                     </div>
                 </div><!--div row end-->
 
@@ -117,7 +117,7 @@
                         <h4>총 가격</h4>
                     </div>
                     <div class="col-md-5 text-right">
-                        <h4>23,000원</h4>
+                        <h4>20,000원</h4>
                     </div>
                 </div><!--div row end-->
                 <div class="row text-right mt-3">
@@ -126,7 +126,8 @@
                         <a href="/member/cart" class="btn btn-warning"><h3 id="h3Btn">바로구매</h3></a>
                     </div>
                     <div class="col-md-4">
-                        <button class="btn btn-success" data-toggle="modal" data-target="#cartUpdate"><h3 id="h3Btn">장바구니</h3></button>
+                        <button class="btn btn-success" id="addCartBtn"><h3 id="h3Btn">장바구니</h3></button>
+<!--                          data-toggle="modal" data-target="#cartUpdate" -->
                     </div>
                 </div>
             </div>
@@ -136,29 +137,10 @@
 
     <div class="container">
         <div class="row my-3">
-            <h2 class="col-md-4 offset-md-4 text-center">추천상품</h2>
+            <h2 class="col-md-4 offset-md-4 text-center">인기상품</h2>
         </div>
-        <div class="row">
-            <div class="col-md-3 text-center">
-                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/redwood/rw.jpg"></a><hr>
-                <a href="/product/detail">레드우드</a>
-                <p>20,000원</p><hr>
-            </div>
-            <div class="col-md-3 text-center">
-                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/blackcherry/bc.jpg"></a><hr>
-                <a href="/product/detail">블랙베리</a>
-                <p>20,000원</p><hr>
-            </div>
-            <div class="col-md-3 text-center">
-                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/lavenderspa/ls.jpg"></a><hr>
-                <a href="/product/detail">라벤더 스파</a>
-                <p>20,000원</p><hr>
-            </div>
-            <div class="col-md-3 text-center">
-                <a href="/product/detail"><img class="img-thumbnail" src="/resources/img/product/tranquilitea/tq.jpg"></a><hr>
-                <a href="/product/detail">트랜퀄리티</a>
-                <p>20,000원</p><hr>
-            </div>
+        <div class="row" id="recommend">
+            
         </div><hr><!--div row end-->
     </div><!--div container end-->
 
@@ -174,7 +156,7 @@
                         <a class="nav-link" data-toggle="tab" href="#review">리뷰</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#QA">문의</a>
+                        <a class="nav-link" data-toggle="tab" href="#qna">Q&amp;A</a>
                     </li>
                 </ul>
 
@@ -187,11 +169,20 @@
                     </div><!--div detail end-->
                     <div id="review" class="container tab-pane fade"><br>
                         <h3>리뷰</h3>
-                        <p>해당 상품 리뷰 목록 표기</p>
+                        <div class="row">
+                        	<div class='col-md-12' id="review">
+		                        
+                        	</div>
+                        </div>
                     </div><!--div review end-->
-                    <div id="QA" class="container tab-pane fade"><br>
-                        <h3>문의</h3>
-                        <p>해당 상품 문의 목록 표시</p>
+                    <div id="qna" class="container tab-pane fade"><br>
+                        <div class="row">
+                        	<div class='col-md-12'>
+		                        <h3>Q&ampA</h3>
+		                        
+		                        
+                        	</div>
+                        </div>
                     </div><!--div QA end-->
                 </div>
             </div>
@@ -221,7 +212,7 @@
                 </div><!-- modal body -->
 
                 <div class="modal-footer">
-                    <button class="btn btn-warning" type="button" data-dismiss="modal">닫기</button>
+                    <button class="btn btn-warning" type="button" id="closeBtn" data-dismiss="modal">닫기</button>
                 </div>
 
             </div><!-- modal content -->
@@ -230,10 +221,142 @@
 
     <!--bootstrap.min.js-->
     <script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
+    
     <script type="text/javascript">
 	    $(document).ready(function(){
-	    	
 	    	var pno = ${pno};
+	    	
+	    	function getRecom() {
+	    		$.getJSON("/product/recom" , function(data){
+					var str = "";
+					
+					$(data).each(function(){
+						str += "<div class='col-md-3 text-center'><a href='/product/detail?pno="
+							+ this.pno + "'><img class='img-thumbnail' src='"
+							+ this.pimg + "'></a><hr><a href='/product/detail/?pno="
+			                + this.pno + "'>"
+			                + this.pname + "</a><p>"
+			                + this.price + "원</p><hr></div>";
+					});
+					$("#recommend").html(str);
+				});
+			}//getRecom
+			getRecom();
+	    	
+	    	function getReview() {
+	    		$.getJSON("/review/product/" + pno , function(data){
+					var str = "";
+					
+					$(data).each(function(){
+						var timestamp = this.rwritedate;
+						var date = new Date(timestamp);
+						
+						var formattedTime = date.getFullYear()
+											+ "/" + (date.getMonth()+1)
+											+ "/" + date.getDate();
+						
+						str += "<hr><div class='row'><div class='col-md-12'><a href='/community/reviewdetail?rno="
+						+ this.rno + "'>"
+						+ this.rtitle + "</a></div></div><div class='row'><div class='col-md-8'><p>"
+						+ this.mid + "</p></div><div class='col-md-4'><p>"
+						+ formattedTime + "</p></div></div><div class='row'><div class='col-md-12'><h5>"
+						+ this.rcontent + "</h5></div></div>";
+					});
+					$("#review").html(str);
+				});
+			}//getReview
+			getReview();
+	    	
+	    	function getQna() {
+	    		$.getJSON("/qna/product/" + pno , function(data){
+					var str = "";
+					
+					$(data).each(function(){
+						var timestamp = this.qwritedate;
+						var date = new Date(timestamp);
+						
+						var formattedTime = date.getFullYear()
+											+ "/" + (date.getMonth()+1)
+											+ "/" + date.getDate();
+						
+						str += "<hr><div class='row'><div class='col-md-12'><a href='/community/askdetail?qno="
+						+ this.qno + "'>"
+						+ this.qtitle + "</a></div></div><div class='row'><div class='col-md-8'><p>"
+						+ this.mid + "</p></div><div class='col-md-4'><p>"
+						+ formattedTime + "</p></div></div><div class='row'><div class='col-md-12'><h5>"
+						+ this.qcontent + "</h5></div></div>";
+					});
+					$("#qna").html(str);
+				});
+			}//getQna
+			getQna();
+	    	
+	    	$("#addCartBtn").on("click", function() {
+	    		
+	    		if("${login.mno}" === "") {
+	    			alert("로그인 후에 이용해주세요.");
+	    			return;
+	    		}
+	    		
+		    	var cnt = $("#cnt option:selected").val();
+		    	
+				$.ajax({
+					type : 'post',
+					url : '/cart/addCart',
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					dataType : 'text',
+					data : JSON.stringify({
+						mno : "${login.mno}",
+						pno : pno,
+						cnt : cnt
+					}),
+					success : function(result) {
+						if(result === 'SUCCESS') {
+							$("body").attr("class", "modal-open");
+							$("body").attr("style", "padding-right: 17px;");
+			                $("body").prepend("<div class='modal-backdrop fade show'></div>");
+			                $("#cartUpdate").attr("class", "modal fade show");
+			                $("#cartUpdate").attr("aria-hidden", "false");
+			                $("#cartUpdate").attr("aria-modal", "true");
+			                $("#cartUpdate").attr("style", "diplay: block; padding-right: 17px;");
+			                $("#cartUpdate").attr("role", "dialog");
+			                $("#cartUpdate").show("");
+						} else if(result === 'FAIL') {
+			                $(".modal-header").html("장바구니 추가 실패");
+			                $(".modal-body").html("해당 상품은 이미 장바구니에 담겨있습니다.");
+							$("body").attr("class", "modal-open");
+							$("body").attr("style", "padding-right: 17px;");
+			                $("body").prepend("<div class='modal-backdrop fade show'></div>");
+			                $("#cartUpdate").attr("class", "modal fade show");
+			                $("#cartUpdate").attr("aria-hidden", "false");
+			                $("#cartUpdate").attr("aria-modal", "true");
+			                $("#cartUpdate").attr("style", "diplay: block; padding-right: 17px;");
+			                $("#cartUpdate").attr("role", "dialog");
+			                $("#cartUpdate").show("");
+						}
+					},
+					error : function(result) {
+						alert("시스템 에러가 발생하였습니다. 잠시후 다시 시도해주세요.")
+					}
+				});//ajax
+			});//addCartBtn
+			
+			$("#closeBtn").on("click", function() {
+                $("body").attr("class", "");
+                $("body").attr("style", "");
+                $(".modal-backdrop").remove();
+                $("#cartUpdate").attr("class", "modal fade");
+                $("#cartUpdate").attr("aria-hidden", "true");
+                $("#cartUpdate").attr("aira-modal", "false");
+                $("#cartUpdate").attr("style", "diplay: none");
+                $("#cartUpdate").attr("role", "");
+                $("#cartUpdate").hide("");
+            });//onclick
 	    	
 	    	function getOne() {
 	    		$.getJSON("/product/one/" + pno, function(data){

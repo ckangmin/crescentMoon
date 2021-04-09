@@ -2,6 +2,7 @@ package org.ict.service;
 
 import java.util.List;
 
+import org.ict.domain.Criteria;
 import org.ict.domain.QnaVO;
 import org.ict.mapper.QnaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,13 @@ public class QnaServiceImpl implements QnaService {
 	}
 
 	@Override
-	public List<QnaVO> getList() {
-		return mapper.selectAll();
+	public List<QnaVO> getList(Criteria cri) {
+		return mapper.selectList(cri);
+	}
+
+	@Override
+	public int getCount() {
+		return mapper.count();
 	}
 
 	@Override
@@ -36,6 +42,21 @@ public class QnaServiceImpl implements QnaService {
 	@Override
 	public void remove(int qno) {
 		mapper.delete(qno);
+	}
+
+	@Override
+	public List<QnaVO> qna(int pno) {
+		return mapper.selectQna(pno);
+	}
+
+	@Override
+	public List<QnaVO> myQna(Criteria cri, int mno) {
+		return mapper.myQna(cri, mno);
+	}
+
+	@Override
+	public int myCount(int mno) {
+		return mapper.myCount(mno);
 	}
 
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +21,17 @@
             <div class="row">
                 <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="/member/login">로그인/회원가입</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="/crescent">로그아웃</a>
-                        <a href="/member/cart" class="ml-3">장바구니</a>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
                         <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div><!-- div col end -->
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -40,7 +47,7 @@
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -48,7 +55,7 @@
         </div><!-- div container end -->
     </nav><!-- nav end -->
         
-    <div class="container my-3"><!--slider-->
+    <div class="container mb-3"><!--slider-->
         <div class="carousel slide" id="carousel-slide-banner" data-bs-ride="carousel">
             <!--indicator-->
             <ol class="carousel-indicators">
@@ -82,7 +89,7 @@
     
     <div class="container mt-2"><!--content-->
         <div class="row my-3">
-            <h2 class="col-md-4 offset-md-4 text-center">추천상품</h2>
+            <h2 class="col-md-4 offset-md-4 text-center">인기상품</h2>
         </div>
         <div class="row" id="hotItems">
             
@@ -101,6 +108,8 @@
     
     <!--bootstrap.min.js-->
     <script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
     
     <script type="text/javascript">
     	$(document).ready(function() {

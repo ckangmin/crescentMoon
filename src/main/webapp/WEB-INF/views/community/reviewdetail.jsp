@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +21,17 @@
             <div class="row">
                 <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="/member/login">로그인/회원가입</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="/crescent">로그아웃</a>
-                        <a href="/member/cart" class="ml-3">장바구니</a>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
                         <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div><!-- div col end -->
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -40,7 +47,7 @@
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -83,10 +90,8 @@
 
         <form action="/community/reviewmodify" method="post">
 	        <div class="row">
-	            <div class="col-md-12 text-right">
-			       	<input type="hidden" id="rno" name="rno" value="${rno}">
-	            	<button type="submit" class="btn btn-success my-3"><h4 id="h4Btn">수정하기</h4></button>
-	            	<button type="button" class="btn btn-danger my-3" id="delBtn"><h4 id="h4Btn">삭제하기</h4></button>
+	            <div class="col-md-12 text-right my-3" id="modAndDel">
+			       	<input type="hidden" id="loginId" value="${login.mid}">
 	                <a href="/community/?cate=r" class="btn btn-primary my-3"><h4 id="h4Btn">목록으로</h4></a>
 	            </div>
 	        </div><!-- div row end -->
@@ -110,6 +115,8 @@
     <!--bootstrap.min.js-->
 
     <script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
     
     <script type="text/javascript">
     	$(document).ready(function() {
@@ -123,8 +130,6 @@
 					var content = "";
 					var img = "";
 					
-					console.log(data);
-					
 					var timestamp = data.rwritedate;
 					var date = new Date(timestamp);
 					var formattedTime = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
@@ -133,11 +138,11 @@
 					writer += "<h5>작성자 : " + data.mid + "</h5>"
 							+ "<h5>작성일자 : " + formattedTime + "</h5>";
 					content += "<h4>" + data.rcontent + "</h4>";
-					img += "<div class='col-md-4 text-center'><img class='img-thumbnail' src='/resources/img/redwood/"
+					img += "<div class='col-md-4 text-center'><img class='img-thumbnail' src='"
 							+ data.rimg1
-							+ "'></div><div class='col-md-4 text-center'><img class='img-thumbnail' src='/resources/img/redwood/"
+							+ "'></div><div class='col-md-4 text-center'><img class='img-thumbnail' src='"
 							+ data.rimg2
-							+ "'></div><div class='col-md-4 text-center'><img class='img-thumbnail'src='/resources/img/redwood/"
+							+ "'></div><div class='col-md-4 text-center'><img class='img-thumbnail'src='"
 							+ data.rimg3
 							+ "'></div>";
 					
@@ -145,19 +150,29 @@
 					$("#writer").html(writer);
 					$("#content").html(content);
 					$("#img").html(img);
+					
+
+					if(data.mid === $("#loginId").val()) {
+						$("#modAndDel").html(
+								"<input type='hidden' id='rno' name='rno' value='" + rno + "'>"
+								+ "<button type='submit' class='btn btn-success'><h4 id='h4Btn'>수정하기</h4></button>"
+		            			+ "<button type='button' class='btn btn-danger mx-2' id='delBtn'><h4 id='h4Btn'>삭제하기</h4></button>"
+		            			+ "<a href='/community/?cate=r' class='btn btn-primary'><h4 id='h4Btn'>목록으로</h4></a>");
+					}//if
+					
 				});//getJSON
 			}//getDetail
 			getDetail();
 			
 			//delBtn
-			$("#delBtn").on("click", function() {
+			$("#modAndDel").on("click", "#delBtn", function() {
 				$.ajax({
 					type : 'delete',
 					url : '/review/' + rno,
 					success : function(result) {
 						if (result === "SUCCESS") {
 							alert("성공적으로 삭제하였습니다.");
-							location.href="/community/";
+							location.href="/community/?cate=r";
 						}
 					}
 				});//ajax

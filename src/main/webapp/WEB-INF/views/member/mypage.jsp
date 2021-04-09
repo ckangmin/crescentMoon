@@ -1,30 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <!-- bootstrap.min.css -->
-<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 <!--custom.css-->
-<link href="../css/custom.css" rel="stylesheet">
+<link href="/resources/css/custom.css" rel="stylesheet">
 <!--jquery.min.js-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <title>CRESCENT MOON</title>
-<link rel="shortcut icon" type="image/x-icon" href="../img/cm_icon.png">
+<link rel="shortcut icon" type="image/x-icon" href="/resources/img/cm_icon.png">
 </head>
 <body>
     <header><!--header-->
         <div class="container">
             <div class="row">
-                <a href="../index.html" class="col-md-1 offset-md-5"><img src="../img/cm_logo.png" id="logo"></a>
+                <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="./login.html">로그인/회원가입</a>
-                    <a href="./cart.html" class="ml-3">장바구니</a><br>
-                    <a href="../index.html">로그아웃</a>
-                        <a href="./cart.html" class="ml-3">장바구니</a>
-                        <a href="./mypage.html" class="ml-3">마이페이지</a><br>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
+                        <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div><!-- div col end -->
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -33,14 +40,14 @@
     <nav>
         <div class="container">
             <ul class="nav nav-tabs nav-justified" id="nav">
-                <li class="nav-item"><a class="nav-link" href="../board/notice.html">공지사항</a></li>
-                <li class="nav-item"><a class="nav-link" href="../product/list.html">전체상품</a></li>
-                <li class="nav-item"><a class="nav-link" href="../board/community.html">커뮤니티</a></li>
+                <li class="nav-item"><a class="nav-link" href="/community/notice">공지사항</a></li>
+                <li class="nav-item"><a class="nav-link" href="/product/list">전체상품</a></li>
+                <li class="nav-item"><a class="nav-link" href="/community/">커뮤니티</a></li>
                 <li class="nav-item">
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="../product/list.html" class="input-group-text"><img src="../icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -59,18 +66,13 @@
         <div class="col-md-8 offset-md-2">
             <div class="jumbotron">
                 <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 class="mb-4"><strong>내정보</strong></h2>
-                        <h5>이름 : 김아무개</h5>
-                        <h5>아이디 : admin1234</h5>
-                        <h5>전화번호 : 010-1234-5678</h5>
-                        <h5>가입일 : 20xx.xx.xx</h5>
+                    <div class="col-md-12 text-center" id="myInfo">
+                        
                     </div>
                 </div><!-- div row end -->
-
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="./myinfo.html" class="text-primary">자세히 보기..</a>
+                        <a href="/member/myinfo" class="text-primary">자세히 보기..</a>
                     </div>
                 </div><!-- div row end --><!--내정보-->
                 
@@ -78,7 +80,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h3 class="mb-4"><strong>최근주문내역</strong></h3>
+                        <h3 class="mb-4"><strong>최근주문내역</strong></h3>0
 
                         <table class="table text-center">
                             <thead>
@@ -102,7 +104,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>총 주문금액 : 23,000원</td>
+                                    <td>총 주문금액 : 20,000원</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -111,7 +113,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="../order/orderlist.html" class="text-primary">자세히 보기..</a>
+                        <a href="/order/orderlist/${login.mno}" class="text-primary">자세히 보기..</a>
                     </div>
                 </div><!-- div row end --><!--주문내역-->
                 
@@ -120,34 +122,38 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <h3 class="mb-4"><strong>최근작성글</strong></h3>
-
+						<hr>
+						<h4>문의</h4>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>분류</th>
                                     <th>제목</th>
                                     <th>작성일</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="myQna">
+                                
+                            </tbody>
+                        </table>
+                        <hr>
+						<h4>리뷰</h4>
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td>문의</td>
-                                    <td>ㅇㅇ캔들 문의입니다.</td>
-                                    <td>20xx.xx.xx</td>
+                                    <th>제목</th>
+                                    <th>작성일</th>
                                 </tr>
-                                <tr>
-                                    <td>문의</td>
-                                    <td>ㅇㅇ캔들 문의입니다.</td>
-                                    <td>20xx.xx.xx</td>
-                                </tr>
+                            </thead>
+                            <tbody id="myReview">
+                                
                             </tbody>
                         </table>
                     </div>
                 </div><!-- div row end -->
-
+                
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="../board/cummulist.html" class="text-primary">자세히 보기..</a>
+                        <a href="/community/mycommunity" class="text-primary">자세히 보기..</a>
                     </div>
                 </div><!-- div row end --><!--작성한글-->
             </div>
@@ -165,6 +171,81 @@
     </footer><!-- footer end -->
     
     <!--bootstrap.min.js-->
-    <script src="/js/bootstrap.min.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var mno = ${login.mno};
+			
+	    	function getUserInfo(){
+				var str = "";
+		    	$.getJSON("/member/" + mno, function(data){
+		    		var timestamp = data.joindate;
+					var date = new Date(timestamp);
+					
+					var formattedTime = date.getFullYear()
+										+ "/" + (date.getMonth()+1)
+										+ "/" + date.getDate();
+					
+					str += "<h3 class='mb-4'><strong>내정보</strong></h2><h5>이름 : "
+						+ data.name + "</h5><h5>아이디 : "
+						+ data.mid + "</h5><h5>전화번호 : "
+						+ data.tel1 + "-" + data.tel2 + "-" + data.tel3 + "</h5><h5>"
+	                    + formattedTime + "</h5>";
+					
+					$("#myInfo").html(str);
+		    	});//getJson
+	    	}//getUserInfo
+	    	getUserInfo();
+	    	
+	    	function getMyQna() {
+				$.getJSON("/qna/myqna/1/3/" + mno, function(data) {
+					var str = "";
+					
+					$(data.list).each(function() {
+						var timestamp = this.qwritedate;
+						var date = new Date(timestamp);
+						
+						var formattedTime = date.getFullYear()
+											+ "/" + (date.getMonth()+1)
+											+ "/" + date.getDate();
+						
+						str += "<tr><td><a href='/community/askdetail?qno="
+							+ this.qno + "'>"
+							+ this.qtitle + "</a></td><td>"
+							+ formattedTime + "</td></tr>";
+					});//each
+					$("#myQna").html(str);
+				});//getJSON
+			}//getMyQna
+			getMyQna();
+	    	
+	    	function getMyReview() {
+				$.getJSON("/review/myreview/1/3/" + mno, function(data) {
+					var str = "";
+					console.log(data);
+					
+					$(data.list).each(function() {
+						var timestamp = this.rwritedate;
+						var date = new Date(timestamp);
+						
+						var formattedTime = date.getFullYear()
+											+ "/" + (date.getMonth()+1)
+											+ "/" + date.getDate();
+						
+						str += "<tr><td><a href='/community/reviewdetail?rno="
+							+ this.rno + "'>"
+							+ this.rtitle + "</a></td><td>"
+							+ formattedTime + "</td></tr>";
+					});//each
+					$("#myReview").html(str);
+				});//getJSON
+			}//getMyReview
+	    	getMyReview();
+	    	
+		});//ready
+	</script>
 </body>
 </html>

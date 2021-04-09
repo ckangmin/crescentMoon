@@ -2,6 +2,7 @@ package org.ict.mapper;
 
 import java.util.List;
 
+import org.ict.domain.Criteria;
 import org.ict.domain.ReviewVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,8 @@ public class ReviewMapperTests {
 	
 //	@Test
 	public void testSeletAll() {
-		List<ReviewVO> lists = mapper.selectAll();
+		Criteria cri = new Criteria();
+		List<ReviewVO> lists = mapper.selectList(cri);
 		
 		lists.forEach(list -> {
 			log.info(list);

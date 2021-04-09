@@ -4,21 +4,26 @@
 <mapper namespace="org.ict.mapper.QnaMapper">
 	
 	<insert id="insert">
-		insert into qna(qtitle, qcontent, mno)
-		values(#{qtitle}, #{qcontent}, #{mno})
+		insert into qna(pno, qtitle, qcontent, mno)
+		values(#{pno}, #{qtitle}, #{qcontent}, #{mno})
 	</insert>
 	
-	<select id="selectAll" resultType="org.ict.domain.QnaVO">
-		select qno, qtitle, u.mid, qwritedate
-		from qna as q, userinfo as u
-		where q.mno = u.mno and qno > 0
+	<select id="selectList" resultType="org.ict.domain.QnaVO">
+		select p.pimg, p.pname, qno, qtitle, u.mid, qwritedate
+		from qna as q, userinfo as u, product as p
+		where q.mno = u.mno and q.pno = p.pno and qno > 0
 		order by qno desc
+		limit #{start}, #{number}
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(qno) from qna where qno > 0
 	</select>
 	
 	<select id="select" resultType="org.ict.domain.QnaVO">
-		select qno, qtitle, qcontent, q.mno, u.mid, qwritedate, qupdatedate
-		from qna as q, userinfo as u 
-		where q.mno = u.mno and qno = #{qno}
+		select pimg, pname, qno, qtitle, qcontent, q.mno, u.mid, qwritedate, qupdatedate
+		from qna as q, userinfo as u , product as p
+		where q.mno = u.mno and q.pno = p.pno and qno = #{qno}
 	</select>
 	
 	<update id="update">
@@ -29,5 +34,25 @@
 	<delete id="delete">
 		delete from qna where qno = #{qno}
 	</delete>
+ 	
+ 	<select id="selectQna" resultType="org.ict.domain.QnaVO">
+ 		select q.qno, u.mid, q.qtitle, q.qcontent, q.qwritedate
+ 		from qna as q, userinfo as u
+ 		where q.mno = u.mno and pno = #{pno}
+ 		order by qwritedate desc
+ 		limit 0, 5
+ 	</select>
+ 	
+ 	<select id="myQna" resultType="org.ict.domain.QnaVO">
+ 		select p.pimg, p.pname, qno, qtitle, u.mid, qwritedate
+		from qna as q, userinfo as u, product as p
+		where q.mno = u.mno and q.pno = p.pno and q.mno = #{mno} and qno > 0
+		order by qno desc
+		limit #{cri.start}, #{cri.number}
+ 	</select>
+	
+	<select id="myCount" resultType="int">
+		select count(qno) from qna where mno = #{mno} and qno > 0
+	</select>
 	
 </mapper>

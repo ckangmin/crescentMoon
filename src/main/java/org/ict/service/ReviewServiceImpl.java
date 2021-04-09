@@ -2,6 +2,8 @@ package org.ict.service;
 
 import java.util.List;
 
+import org.ict.domain.Criteria;
+import org.ict.domain.QnaVO;
 import org.ict.domain.ReviewVO;
 import org.ict.mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,13 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewVO> getList() {
-		return mapper.selectAll();
+	public List<ReviewVO> getList(Criteria cri) {
+		return mapper.selectList(cri);
+	}
+	
+	@Override
+	public int getCount() {
+		return mapper.count();
 	}
 
 	@Override
@@ -36,6 +43,21 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public void remove(int rno) {
 		mapper.delete(rno);
+	}
+
+	@Override
+	public List<ReviewVO> review(int pno) {
+		return mapper.selectReview(pno);
+	}
+
+	@Override
+	public List<ReviewVO> myReview(Criteria cri, int mno) {
+		return mapper.myReview(cri, mno);
+	}
+
+	@Override
+	public int myCount(int mno) {
+		return mapper.myCount(mno);
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.ict.service;
 
+import org.ict.domain.Criteria;
 import org.ict.domain.ReviewVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,8 @@ public class ReviewServiceTests {
 	
 //	@Test
 	public void testGetList() {
-		service.getList();
+		Criteria cri = new Criteria();
+		service.getList(cri);
 	}//testGetList
 	
 //	@Test

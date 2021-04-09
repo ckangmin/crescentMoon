@@ -1,11 +1,17 @@
 package org.ict.controller;
 
 import org.ict.domain.Category;
+import org.ict.domain.Criteria;
+import org.ict.domain.NoticeVO;
+import org.ict.domain.PageMaker;
+import org.ict.service.NoticeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/community/*")
@@ -20,10 +26,76 @@ public class CommunityController {
 	}//community
 	
 	@GetMapping("/mycommunity")
-	public void mycommunity(Model model, int mno) {
-		model.addAttribute("mno", mno);
+	public void mycommunity() {
+		
 	}//mycommunity
 //커뮤니티//
+
+//공지 컨트롤러//
+	@Autowired
+	private NoticeService service;
+	
+	@GetMapping("/notice")
+	public void list(Model model, Criteria cri) {
+		
+		model.addAttribute("list", service.getListPage(cri));
+		model.addAttribute("cri", cri);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalPage(service.getCountPage(cri));
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
+	
+	@PostMapping("/write")
+	public String write(NoticeVO notice) {
+		service.write(notice);
+		
+		return "redirect:/community/notice";
+		
+	}
+	
+	@GetMapping("/noticewrite")
+	public String write() {
+		return "/community/noticewrite";
+	}
+	
+	@GetMapping("/noticedetail")
+	public void detail(int nno, Model model) {
+		model.addAttribute("board", service.detail(nno));
+	}
+	
+	@PostMapping("/remove")
+	public String remove(int nno, RedirectAttributes rttr, Model model) {
+		
+		service.remove(nno);
+		rttr.addAttribute("nno", nno);
+		
+		return "redirect:/community/notice";
+	}
+	
+	@GetMapping("/noticemodify")
+	public void goupdate(Model model ,int nno) {
+		NoticeVO notice = service.detail(nno);
+		
+		model.addAttribute("board", notice);
+		model.addAttribute("nno", nno);
+	}
+	
+	@PostMapping("/modifyrun")
+	public String modify(NoticeVO notice,
+					Criteria cri,
+					RedirectAttributes rttr) {
+		// 넘겨받은 글 정보를 갱신 등록
+		service.modify(notice);
+		
+		// 수정된 글 번호 정보를 저장
+		rttr.addFlashAttribute("nno",notice.getNno());
+		
+		// 디테일 페이지로 넘어가기 위해 redirect 주소 설정
+		return "redirect:/community/noticedetail?nno=" + notice.getNno();
+	}
+//공지 컨트롤러//
 	
 //문의 컨트롤러//
 	@GetMapping("/askwrite")
@@ -43,8 +115,6 @@ public class CommunityController {
 		return "/community/askmodify";
 	}//askModify
 //문의 컨트롤러//
-	
-	
 	
 //리뷰 컨트롤러//
 	@GetMapping("/reviewwrite")

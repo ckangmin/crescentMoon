@@ -3,6 +3,8 @@ package org.ict.service;
 import java.util.List;
 
 import org.ict.domain.ProductVO;
+import org.ict.domain.QnaVO;
+import org.ict.domain.ReviewVO;
 import org.ict.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductVO> list() {
-		return mapper.selectAll();
+	public List<ProductVO> list(String pname) {
+		return mapper.selectAll(pname);
 	}
 
 	@Override
@@ -36,11 +38,8 @@ public class ProductServiceImpl implements ProductService {
 		mapper.delete(pno);
 	}
 
-	@Override
-	public List<ProductVO> find(String pname) {
-		
-		return mapper.search(pname);
+	public List<ProductVO> recom() {
+		return mapper.selectRecom();
 	}
 	
-
 }//class

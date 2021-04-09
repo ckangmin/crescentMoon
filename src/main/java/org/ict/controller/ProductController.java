@@ -24,17 +24,13 @@ public class ProductController {
 	}//detail
 	
 	@GetMapping("/list")
-	public void list() {
-		
+	public void list(Model model, String pname) {
+		model.addAttribute("pname", pname);
 	}//list
 	
 	@PostMapping("/modify")
 	public void modify(Model model, int pno) {
 		model.addAttribute("pno", pno);
 	}//modify
-
-	@GetMapping("/search")
-	public void search(Model model, String pname) {
-		model.addAttribute("pname", pname);
-	}//search
+	
 }//class

@@ -23,11 +23,16 @@
 		)
 	</insert>
 	
-	<select id="selectAll" resultType="org.ict.domain.ReviewVO">
+	<select id="selectList" resultType="org.ict.domain.ReviewVO">
 		select pimg, pname, rno, rtitle, u.mid, rwritedate
 		from review as r, userinfo as u, product as p
 		where r.mno = u.mno and r.pno = p.pno and rno > 0
 		order by rno desc
+		limit #{start}, #{number}
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(rno) from review where rno > 0
 	</select>
 	
 	<select id="select" resultType="org.ict.domain.ReviewVO">
@@ -53,5 +58,25 @@
 	<delete id="delete">
 		delete from review where rno = #{rno}
 	</delete>
+ 	
+ 	<select id="selectReview" resultType="org.ict.domain.ReviewVO">
+ 		select r.rno, u.mid, r.rtitle, r.rcontent, r.rwritedate
+ 		from review as r, userinfo as u
+ 		where r.mno = u.mno and pno = #{pno}
+ 		order by rwritedate desc
+ 		limit 0, 5
+ 	</select>
+ 	
+ 	<select id="myReview" resultType="org.ict.domain.ReviewVO">
+ 		select p.pimg, p.pname, rno, rtitle, u.mid, rwritedate
+		from review as r, userinfo as u, product as p
+		where r.mno = u.mno and r.pno = p.pno and r.mno = #{mno} and rno > 0
+		order by rno desc
+		limit #{cri.start}, #{cri.number}
+ 	</select>
+	
+	<select id="myCount" resultType="int">
+		select count(rno) from review where mno = #{mno} and rno > 0
+	</select>
 
 </mapper>

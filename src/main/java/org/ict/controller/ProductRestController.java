@@ -3,6 +3,8 @@ package org.ict.controller;
 import java.util.List;
 
 import org.ict.domain.ProductVO;
+import org.ict.domain.QnaVO;
+import org.ict.domain.ReviewVO;
 import org.ict.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/product/*")
 public class ProductRestController {
 	@Autowired
 	private ProductService service;
@@ -45,7 +47,7 @@ public class ProductRestController {
 		ResponseEntity<List<ProductVO>> entity=null;
 		
 		try {
-			entity=new ResponseEntity<>(service.list(),HttpStatus.OK);
+			entity=new ResponseEntity<>(service.list(""),HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();
 			entity=new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -54,18 +56,20 @@ public class ProductRestController {
 		return entity;
 	}//prodList
 	
-
-	@GetMapping(value="/search/{pname}", produces= {MediaType.APPLICATION_ATOM_XML_VALUE,MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<ProductVO>> proSearch(@PathVariable("pname") String pname){
+	@GetMapping(value="/all/{pname}", produces= {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<List<ProductVO>> prodList(@PathVariable("pname") String pname) {
 		ResponseEntity<List<ProductVO>> entity=null;
+		
 		try {
-			entity=new ResponseEntity<>(service.find(pname), HttpStatus.OK);
-		}catch(Exception e) {
+			entity=new ResponseEntity<>(service.list(pname),HttpStatus.OK);
+		}catch (Exception e) {
 			e.printStackTrace();
 			entity=new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
 		return entity;
-	}//proSearch
+	}//prodList
+	
 	@GetMapping(value="/one/{pno}", produces= {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<ProductVO> prodDetail(@PathVariable("pno") int pno) {
 		ResponseEntity<ProductVO> entity=null;
@@ -79,7 +83,6 @@ public class ProductRestController {
 		
 		return entity;
 	}//prodDetail
-	
 	
 	@RequestMapping(method= {RequestMethod.PUT, RequestMethod.PATCH}, value="/{pno}", consumes="application/json", produces=MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> prodModify(@RequestBody ProductVO vo, @PathVariable("pno") int pno) {
@@ -111,5 +114,19 @@ public class ProductRestController {
 		
 		return entity;
 	}//prodRemove
+	
+	@GetMapping(value="/recom", produces= {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<List<ProductVO>> recommend() {
+		ResponseEntity<List<ProductVO>> entity=null;
+		
+		try {
+			entity=new ResponseEntity<>(service.recom(),HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}//recommend
 	
 }//class

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +21,17 @@
             <div class="row">
                 <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="/member/login">로그인/회원가입</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="/crescent">로그아웃</a>
-                        <a href="/member/cart" class="ml-3">장바구니</a>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
                         <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div><!-- div col end -->
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -33,14 +40,14 @@
     <nav>
         <div class="container">
             <ul class="nav nav-tabs nav-justified" id="nav">
-                <li class="nav-item"><a class="nav-link" href="/notice">공지사항</a></li>
+                <li class="nav-item"><a class="nav-link" href="/community/notice">공지사항</a></li>
                 <li class="nav-item"><a class="nav-link" href="/product/list">전체상품</a></li>
                 <li class="nav-item"><a class="nav-link active" href="/community/">커뮤니티</a></li>
                 <li class="nav-item">
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -53,6 +60,14 @@
             <h1 class="col-md-6 align-self-center"><strong>Q&A 작성페이지</strong></h1>
         </div><!-- div row end -->
         
+        <div class="row my-3">
+            <div class="col-md-4">
+                <select class="form-control" id="productlist">
+                	
+                </select>
+            </div>
+        </div><!-- div row end -->
+        
         <div class="row">
             <div class="col-md-6">
                 <h4>글제목</h4>
@@ -62,7 +77,7 @@
         
         <hr>
 		
-		<input type="text" id="mno" value="2">
+		<input type="hidden" id="mno" value="${login.mno}">
 		
         <textarea class="form-control" id="qcontent" name="qcontent" rows="10"></textarea>
 
@@ -85,12 +100,15 @@
     
     <!--bootstrap.min.js-->
     <script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
     
     <script type="text/javascript">
     	$(document).ready(function() {
 			
     		$("#writeBtn").on("click", function() {
 				var mno = $("#mno").val();
+				var pno = $("select option:selected").val();
 				var qtitle = $("#qtitle").val();
 				var qcontent = $("#qcontent").val();
 				
@@ -104,6 +122,7 @@
 					dataType : 'text',
 					data : JSON.stringify({
 						mno : mno,
+						pno : pno,
 						qtitle : qtitle,
 						qcontent : qcontent
 					}),
@@ -115,7 +134,22 @@
 					}
 				});//ajax
 			});//writeBtn
-    		
+			
+    		function getProductList() {
+				$.getJSON("/product/all", function(data) {
+					var str = "";
+					
+					$(data).each(function(){
+						
+						str += "<option value='"
+							+ this.pno + "' >"
+							+ this.pname + "</option>";
+					});
+					$("#productlist").html(str);
+				});//getJSON
+			}//getProductList
+			getProductList();
+			
 		});//ready
     </script>
 </body>

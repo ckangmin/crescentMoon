@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +21,17 @@
             <div class="row">
                 <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="/member/login">로그인/회원가입</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="/crescent">로그아웃</a>
-                        <a href="/member/cart" class="ml-3">장바구니</a>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
                         <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div><!-- div col end -->
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -33,14 +40,14 @@
     <nav>
         <div class="container">
             <ul class="nav nav-tabs nav-justified" id="nav">
-                <li class="nav-item"><a class="nav-link" href="/notice">공지사항</a></li>
+                <li class="nav-item"><a class="nav-link" href="/community/notice">공지사항</a></li>
                 <li class="nav-item"><a class="nav-link" href="/product/list">전체상품</a></li>
                 <li class="nav-item"><a class="nav-link active" href="/community/">커뮤니티</a></li>
                 <li class="nav-item">
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -79,7 +86,8 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr class="text-center">
-                                            <th id="cummuTh"><h4><strong>글번호</strong></h4></th>
+                                            <th id="cummuTh"><h4><strong>상품이미지</strong></h4></th>
+                                            <th><h4><strong>상품명</strong></h4></th>
                                             <th><h4><strong>제목</strong></h4></th>
                                             <th><h4><strong>작성자</strong></h4></th>
                                             <th><h4><strong>작성일</strong></h4></th>
@@ -98,28 +106,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul class="pagination  justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#">&laquo;</a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">4</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">5</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">&raquo;</a>
-                                        </li>
+                                    <ul class="pagination  justify-content-center" id="qnaPage">
+                                    	
                                     </ul>
                                 </div>
                             </div><!-- div row end -->
@@ -155,28 +143,8 @@
                             
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul class="pagination  justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#">&laquo;</a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">4</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">5</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">&raquo;</a>
-                                        </li>
+                                    <ul class="pagination  justify-content-center" id="reviewPage">
+                                        
                                     </ul>
                                 </div>
                             </div><!-- div row end -->
@@ -199,14 +167,19 @@
     
     <!--bootstrap.min.js-->
     <script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
     
     <script type="text/javascript">
     	$(document).ready(function() {
-    		function getQnaList() {
-				$.getJSON("/qna/list", function(data) {
+    		var page = 1;
+    		
+    		function getQnaList(page) {
+				$.getJSON("/qna/list/" + page, function(data) {
 					var str = "";
 					
-					$(data).each(function() {
+					$(data.list).each(function() {
+						
 						var timestamp = this.qwritedate;
 						var date = new Date(timestamp);
 						
@@ -214,22 +187,25 @@
 											+ "/" + (date.getMonth()+1)
 											+ "/" + date.getDate();
 						
-						str += "<tr class='text-center'><td id='cummuTd'><h4>"
-							+ this.qno + "</h4></td><td id='cummuTd'><h4><a href='/community/askdetail?qno=" + this.qno + "'>"
+						str += "<tr class='text-center'><td id='cummuTd'><h4><img src='"
+							+ this.pimg + "' id='cummuReImg'></h4></td><td id='cummuTd'><h4><br>"
+							+ this.pname + "</h4></td><td id='cummuTd'><h4><br><a href='/community/askdetail?qno=" + this.qno + "'>"
 							+ this.qtitle + "</a></h4></td><td id='cummuTd'><h4>"
 							+ this.mid + "</h4></td><td id='cummuTd'><h4>"
 							+ formattedTime + "</h4></td></tr>";
+							
 					});//each
 					$("#qnaList").html(str);
+					printPagingQna(data.pageMaker);
 				});//getJSON
 			}//getQnaList
-    		getQnaList();
+    		getQnaList(page);
 			
-    		function getReviewList() {
-				$.getJSON("/review/list", function(data) {
+    		function getReviewList(page) {
+				$.getJSON("/review/list/" + page, function(data) {
 					var str = "";
 					
-					$(data).each(function() {
+					$(data.list).each(function() {
 						var timestamp = this.rwritedate;
 						var date = new Date(timestamp);
 						
@@ -240,18 +216,17 @@
 						str += "<tr class='text-center'><td id='cummuTd'><h4><img src='"
 							+ this.pimg + "' id='cummuReImg'></h4></td><td id='cummuTd'><h4><br>"
 							+ this.pname + "</h4></td><td id='cummuTd'><h4><br><a href='/community/reviewdetail?rno=" + this.rno + "'>"
-							+ this.rtitle + "</h4></td><td id='cummuTd'><h4><br>"
+							+ this.rtitle + "</a></h4></td><td id='cummuTd'><h4><br>"
 							+ this.mid + "</h4></td><td id='cummuTd'><h4><br>"
 							+ formattedTime + "</h4></td></tr>";
 					});//each
 					$("#reviewList").html(str);
+					printPagingReview(data.pageMaker);
 				});//getJSON
 			}//getReviewList
-			getReviewList();
+			getReviewList(page);
 			
 			function setCategory() {
-// 				console.log("${cate.cate}");
-
 				if(${cate.cate != null}) {
 					$("#qnaNav").attr("class", "nav-link");
 					$("#reviewNav").attr("class", "nav-link active");
@@ -261,6 +236,60 @@
 				
 			}//getCategory
 			setCategory();
+			
+			function printPagingQna(pageMaker) {
+				var str = "";
+				
+				if(pageMaker.prev) {
+					str += "<li><a href='" + (pageMaker.startPage - 1) + "'> << </a></li>";
+				}
+				
+				for(var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
+					var strClass = pageMaker.cri.page == i ? ' active' : '';
+					str += "<li class='page-item" + strClass + "'><a href='" + i + "' class='page-link'>" + i + "</a></li>";
+				}
+				
+				if(pageMaker.next) {
+					str += "<li><a href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
+				}
+				
+				$("#qnaPage").html(str);
+			}//printPaging
+			
+			function printPagingReview(pageMaker) {
+				var str = "";
+				
+				if(pageMaker.prev) {
+					str += "<li><a href='" + (pageMaker.startPage - 1) + "'> << </a></li>";
+				}
+				
+				for(var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
+					var strClass = pageMaker.cri.page == i ? ' active' : '';
+					str += "<li class='page-item" + strClass + "'><a href='" + i + "' class='page-link'>" + i + "</a></li>";
+				}
+				
+				if(pageMaker.next) {
+					str += "<li><a href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
+				}
+				
+				$("#reviewPage").html(str);
+			}//printPagingReview
+			
+			$("#qnaPage").on("click", "li a", function(e) {
+				e.preventDefault();
+				
+				replyPage = $(this).attr("href");
+				
+				getQnaList(replyPage);
+			});//qnaPage
+			
+			$("#reviewPage").on("click", "li a", function(e) {
+				e.preventDefault();
+				
+				replyPage = $(this).attr("href");
+				
+				getReviewList(replyPage);
+			});//reviewPage
 			
 		});//ready
     </script>

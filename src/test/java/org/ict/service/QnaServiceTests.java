@@ -1,5 +1,6 @@
 package org.ict.service;
 
+import org.ict.domain.Criteria;
 import org.ict.domain.QnaVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,8 @@ public class QnaServiceTests {
 	
 	@Test
 	public void testGetList() {
-		service.getList();
+		Criteria cri = new Criteria();
+		service.getList(cri);
 	}//testGetList
 	
 //	@Test

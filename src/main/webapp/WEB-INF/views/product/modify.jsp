@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <meta charset="UTF-8">
 <!-- bootstrap.min.css -->
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -14,19 +13,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <title>CRESCENT MOON</title>
-
+<link rel="shortcut icon" type="image/x-icon" href="/resources/img/cm_icon.png">
 </head>
 <body>
-     <header><!--header-->
+    <header><!--header-->
         <div class="container">
             <div class="row">
                 <a href="/crescent" class="col-md-1 offset-md-5"><img src="/resources/img/cm_logo.png" id="logo"></a>
                 <div class="col-md-4 offset-md-2 mt-5 text-right">
-                    <a href="/member/login">로그인/회원가입</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a><br>
-                    <a href="/crescent">로그아웃</a>
-                    <a href="/member/cart" class="ml-3">장바구니</a>
-                    <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	<c:if test="${empty login}">
+                		<!-- 로그인O -->
+	                    <a href="/member/login">로그인/회원가입</a>
+	                    <a href="/cart" class="ml-3">장바구니</a><br>
+                	</c:if>
+                	<c:if test="${not empty login}">
+                		<!-- 로그인X -->
+                    	<a href="/member/logout">로그아웃</a>
+                        <a href="/cart" class="ml-3">장바구니</a>
+                        <a href="/member/mypage" class="ml-3">마이페이지</a><br>
+                	</c:if>
                 </div>
             </div><!-- div row end -->
         </div><!-- div container end -->
@@ -41,7 +46,7 @@
                     <div class="input-group">
                         <input class="form-control" type="text" id="search">
                         <div class="input-group-append">
-                            <a href="/product/list" class="input-group-text"><img src="/resources/icon/search.svg"></a>
+                            <button type="button"class="input-group-text" id="searchBtn"><img src="/resources/icon/search.svg"></button>
                         </div>
                     </div>
                 </li>
@@ -86,10 +91,22 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div><!-- container -->
     
+    <footer><!--footer-->
+        <div class="container" id="footer_area">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="text-primary">푸터영역입니다.</h1>
+                </div>
+            </div><!-- div row end -->
+        </div><!-- div container end -->
+    </footer><!-- footer end -->
     
-    
+    <!--bootstrap.min.js-->
+    <script src="/resources/js/bootstrap.min.js"></script>
+    <!-- search.js -->
+    <script src="/resources/js/search.js"></script>
     
     <script type="text/javascript">
 	 	$(document).ready(function() {

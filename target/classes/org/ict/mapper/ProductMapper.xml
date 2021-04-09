@@ -11,7 +11,10 @@
  	</insert>
  
  	<select id="selectAll" resultType="org.ict.domain.ProductVO">
- 		select * from product where pno> 0 	
+ 		select * from product where pno> 0
+ 		<if test="pname != null">
+	 		and pname LIKE CONCAT('%', #{pname}, '%')
+ 		</if>
 	</select>
  
 	<update id="update">
@@ -30,13 +33,16 @@
  		delete from product
  		where pno = #{pno}
  	</delete>
+ 	
+ 	<select id="selectRecom" resultType="org.ict.domain.ProductVO">
+ 		select * from product
+ 		order by salescnt desc
+ 		limit 0, 4
+ 	</select>
+ 	
  	<select id="search" resultType="org.ict.domain.ProductVO">
  		select * from product
- 		where pname LIKE CONCAT('%', #{pname}, '%')
-
-
- 	
- 	
+ 		where 
  	</select>
  	
  </mapper>
